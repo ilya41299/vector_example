@@ -39,7 +39,7 @@ tree_t<T>::~tree_t()
 }
 
 template <typename T>
-tree_t<T>::check_operator(std::ostream& stream, char op, T value)
+void tree_t<T>::check_operator(std::ostream& stream, char op, T value)
 {
 	switch (op)
 	{
@@ -75,7 +75,7 @@ tree_t<T>::check_operator(std::ostream& stream, char op, T value)
 }
 
 template <typename T>
-tree_t<T>::insert(T value)
+void tree_t<T>::insert(T value)
 {
 	node_t* node = new node_t;
 	node->value = value;
@@ -120,7 +120,7 @@ tree_t<T>::insert(T value)
 }
 
 template <typename T>
-tree_t<T>::print(std::ostream& stream, int level, node_t* node)
+void tree_t<T>::print(std::ostream& stream, int level, node_t* node)
 {
 	if (node == nullptr)
 		return;
@@ -137,7 +137,7 @@ tree_t<T>::print(std::ostream& stream, int level, node_t* node)
 }
 
 template <typename T>
-tree_t<T>::find(T value) const
+bool tree_t<T>::find(T value) const
 {
 	node_t* node = root_;
 	while (node != nullptr)
@@ -160,7 +160,7 @@ tree_t<T>::find(T value) const
 }
 
 template <typename T>
-tree_t<T>::destroy(node_t* node)
+void tree_t<T>::destroy(node_t* node)
 {
 	if (node != nullptr)
 	{
