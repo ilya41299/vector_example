@@ -27,7 +27,7 @@ public:
 };
 	
 template <typename T>
-tree_t<T>::tree_t()(T value)
+tree_t<T>::tree_t()
 {
 	root_ = nullptr;
 }
