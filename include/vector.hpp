@@ -1,6 +1,6 @@
 #include <iostream>
 #include <initializer_list> 
-using namespace std;
+
 template <typename T>
 class tree_t
 {
@@ -181,8 +181,14 @@ void tree_t<T>::destroy(node_t* node)
 {
 	if (node != nullptr)
 	{
-		destroy(node->left);
-		destroy(node->right);
+		if (node->left) 
+		{
+			destroy(node->left);
+		}
+		if (node->right) 
+		{
+			destroy(node->right);
+		}
 		delete node;
 	}
 }
@@ -224,25 +230,31 @@ else
 	}
 	else {
 		if (param2->left == nullptr && param2->right == nullptr) {
+			if (param2 == param1->right) {
+				param1->right = nullptr;
+			}
+			if (param2 == param1->left) {
+				param1->left = nullptr;
+			}
 			delete param2;
 			return true;
 		}
 		else {
 			if (param2->left == nullptr && param2->right != nullptr) {
 				if (param2 == param1->right) {
-					param1->right = param2->right;
+					param1->right = nullptr;
 				}
 				if (param2 == param1->left) {
-					param1->left = param2->right;
+					param1->left = nullptr;
 				}
 				delete param2;
 			}
 			else if (param2->left != nullptr && param2->right == nullptr) {
 				if (param2 == param1->right) {
-					param1->right = param2->left;
+					param1->right = nullptr;
 				}
 				if (param2 == param1->left) {
-					param1->left = param2->left;
+					param1->left = nullptr;
 				}
 				delete param2;
 			}
@@ -255,7 +267,7 @@ else
 					param2 = param2->left;
 				}
 				param->value = param2->value;
-				param1 = param2->right;
+				param1->left = param2->right;
 				delete param2;
 			}
 		}
@@ -263,29 +275,3 @@ else
 }
 return true;
 } 
-
-template <typename T>
-bool tree_t<T>::equal (node_t* first, node_t* second) const {
-	if (first == nullptr && second == nullptr) return(true);
-	else if (first != nullptr && second != nullptr)
-	{
-		return(
-			first->value == second->value &&
-			equal(first->left, second->left) &&
-			equal(first->right, second->right)
-			);
-	}
-	else return false;
-}
-
-template <typename T>
-auto tree_t<T>::operator==(tree_t const & other) const {
-	node_t* first = root_; node_t* second = other.root_;
-	if (equal(first, second)) {
-		cout << "True" << endl;
-	}
-	else {
-		cout << "False" << endl;
-	}
-}
-	
