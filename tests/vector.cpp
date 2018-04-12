@@ -65,3 +65,38 @@ TEST_CASE("Check operator tree '?' ")
 	REQUIRE(ostream.str() == "true");
 }
 	
+//
+TEST_CASE(" initializer_list ")
+{
+	initializer_list <int> list{ 7, 3, 9, 6};
+	tree_t<int> My_tree(list);
+	std::ostringstream ostream;
+	My_tree.print(ostream, 0, My_tree.root());
+	std::string output {
+		"---9\n"
+		"7\n"
+		"------6\n"
+		"---3\n"};
+	REQUIRE(output == ostream.str());
+}
+
+TEST_CASE(" operator== true")
+{	
+	initializer_list <int> list{ 7, 3, 9, 6};
+	tree_t<int> My_tree_1(list);
+	tree_t<int> My_tree_2(list);
+	My_tree_1 == My_tree_2;
+	std::string output {True};
+	REQUIRE(output == ostream.str());
+}
+
+TEST_CASE(" operator== false")
+{	
+	initializer_list <int> list_1{ 7, 3, 9, 6};
+	initializer_list <int> list_2{ 7, 3, 9, 6};
+	tree_t<int> My_tree_1(list_1);
+	tree_t<int> My_tree_2(list_2);
+	My_tree_1 == My_tree_2;
+	std::string output {False};
+	REQUIRE(output == ostream.str());
+}
