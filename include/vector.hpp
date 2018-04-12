@@ -1,4 +1,7 @@
 #include <iostream>
+#include <initializer_list> 
+using namespace std;
+
 template <typename T>
 class tree_t
 {
@@ -24,8 +27,22 @@ public:
 	void print(std::ostream& stream, int level, node_t* node);
 	void destroy(node_t* node);
 	~tree_t();
+	tree_t(std::initializer_list<T> keys);
+	auto operator==(tree_t const & other) const;
+	bool remove(T key);
 };
 	
+template <typename T>
+tree_t<T>::tree_t(std::initializer_list<T> keys)
+{
+	int n = keys.size();
+	const int* _ptr = keys.begin();
+	for (int i=0; i < n; i++)
+	{
+		insert(_ptr[i]);
+	}
+}
+
 template <typename T>
 tree_t<T>::tree_t()
 {
@@ -127,7 +144,7 @@ void tree_t<T>::print(std::ostream& stream, int level, node_t* node)
 
 	print(stream, level + 1, node->right);
 
-	for (unsigned int i = 0; i < level; i++)
+	for (size_t i = 0; i < level; i++)
 	{
 		stream << "---";
 	}
@@ -168,4 +185,60 @@ void tree_t<T>::destroy(node_t* node)
 		destroy(node->right);
 		delete node;
 	}
+}
+
+template <typename T>
+bool tree_t<T>::remove(T key)
+{
+	if (!find(key))
+		return false;
+	node_t* node = root_;
+	while (node != nullptr)
+	{
+		if (node->value == key)
+		{
+			break;
+		}
+		else
+		{
+			if (key <= node->value)
+			{
+				node = node->left;
+			}
+			else
+				node = node->right;
+		}
+	}
+	if (node.right && node.left) 
+	{
+		delete node;
+		return true;
+	}
+	if (node.right == nullptr || node.left == nullptr) 
+	{
+		if (node.right != nullptr)
+		{
+			node=node.right;
+			delete node.right;
+			return true;
+		}
+		if (node.left != nullptr)
+		{
+			node = node.left;
+			delete node.left;
+			return true;
+		}
+	}
+	node_t param_1 = node.right;
+	node_t param_2= param_1.left;
+	while (param_2.left) 
+	{
+		param_1 = param_2.left;
+		param_2 = param_1.left;
+
+	}
+	node.value = param_2.value;
+	param_1.left = param_2.right;
+	delete param_2;
+	return true;
 }
