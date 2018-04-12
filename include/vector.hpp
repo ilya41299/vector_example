@@ -275,3 +275,24 @@ else
 }
 return true;
 } 
+
+template <typename T>
+bool tree_t<T>::equal (node_t* first, node_t* second) const {
+	if (first == nullptr && second == nullptr) return(true);
+	else if (first != nullptr && second != nullptr)
+	{
+		return(
+			first->value == second->value &&
+			equal(first->left, second->left) &&
+			equal(first->right, second->right)
+			);
+	}
+	else return false;
+}
+
+template <typename T>
+auto tree_t<T>::operator==(tree_t const & other) const {
+	node_t* first = root_; node_t* second = other.root_;
+	return (equal(first, second));
+}
+	
