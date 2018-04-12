@@ -86,9 +86,8 @@ TEST_CASE(" operator== true")
 	tree_t<int> My_tree_1(list);
 	tree_t<int> My_tree_2(list);
 	std::ostringstream ostream;
-	My_tree_1 == My_tree_2;
 	std::string output {"True"};
-	REQUIRE(output == ostream.str());
+	REQUIRE(output == (My_tree_1 == My_tree_2));
 }
 
 TEST_CASE(" operator== false")
@@ -98,7 +97,7 @@ TEST_CASE(" operator== false")
 	tree_t<int> My_tree_1(list_1);
 	tree_t<int> My_tree_2(list_2);
 	std::ostringstream ostream;
-	My_tree_1 == My_tree_2;
+	
 	std::string output {"False"};
-	REQUIRE(output == ostream.str());
+	REQUIRE(output == (My_tree_1 == My_tree_2));
 }
