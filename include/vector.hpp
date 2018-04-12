@@ -1,7 +1,6 @@
 #include <iostream>
 #include <initializer_list> 
 using namespace std;
-
 template <typename T>
 class tree_t
 {
@@ -24,6 +23,7 @@ public:
 	void check_operator(std::ostream& stream, char op, T value);
 	void insert(T value);
 	bool find(T value) const;
+	bool equal(node_t* a, node_t* b) const;
 	void print(std::ostream& stream, int level, node_t* node);
 	void destroy(node_t* node);
 	~tree_t();
@@ -187,58 +187,105 @@ void tree_t<T>::destroy(node_t* node)
 	}
 }
 
+
 template <typename T>
-bool tree_t<T>::remove(T key)
+bool tree_t<T>::remove(T key) 
 {
-	if (!find(key))
-		return false;
-	node_t* node = root_;
-	while (node != nullptr)
+if (root_ == nullptr)
+{
+	return false;
+}
+else
+{
+	node_t* param1 = root_;
+	node_t* param2 = root_;
+	while (1)
 	{
-		if (node->value == key)
+		if (param2->value == key)
 		{
 			break;
 		}
-		else
+		else if (param2->value < key)
 		{
-			if (key <= node->value)
-			{
-				node = node->left;
+			param1 = param2;
+			param2 = param2->right;
+		}
+		else if (param2->value > key)
+		{
+			param1 = param2;
+			param2 = param2->left;
+		}
+		else if (param2 == nullptr) {
+			break;
+		}
+	}
+	if (param2 == nullptr) {
+		return false;
+	}
+	else {
+		if (param2->left == nullptr && param2->right == nullptr) {
+			delete param2;
+			return true;
+		}
+		else {
+			if (param2->left == nullptr && param2->right != nullptr) {
+				if (param2 == param1->right) {
+					param1->right = param2->right;
+				}
+				if (param2 == param1->left) {
+					param1->left = param2->right;
+				}
+				delete param2;
 			}
-			else
-				node = node->right;
+			else if (param2->left != nullptr && param2->right == nullptr) {
+				if (param2 == param1->right) {
+					param1->right = param2->left;
+				}
+				if (param2 == param1->left) {
+					param1->left = param2->left;
+				}
+				delete param2;
+			}
+			else if (param2->left != nullptr && param2->right != nullptr) {
+				node_t* param = param2;
+				param1 = param2;
+				param2 = param2->right;
+				while (param2->left != nullptr) {
+					param1 = param2;
+					param2 = param2->left;
+				}
+				param->value = param2->value;
+				param1 = param2->right;
+				delete param2;
+			}
 		}
 	}
-	if (node.right && node.left) 
-	{
-		delete node;
-		return true;
-	}
-	if (node.right == nullptr || node.left == nullptr) 
-	{
-		if (node.right != nullptr)
-		{
-			node=node.right;
-			delete node.right;
-			return true;
-		}
-		if (node.left != nullptr)
-		{
-			node = node.left;
-			delete node.left;
-			return true;
-		}
-	}
-	node_t param_1 = node.right;
-	node_t param_2= param_1.left;
-	while (param_2.left) 
-	{
-		param_1 = param_2.left;
-		param_2 = param_1.left;
-
-	}
-	node.value = param_2.value;
-	param_1.left = param_2.right;
-	delete param_2;
-	return true;
 }
+return true;
+} 
+
+template <typename T>
+bool tree_t<T>::equal (node_t* first, node_t* second) const {
+	if (first == nullptr && second == nullptr) return(true);
+	else if (first != nullptr && second != nullptr)
+	{
+		return(
+			first->value == second->value &&
+			equal(first->left, second->left) &&
+			equal(first->right, second->right)
+			);
+	}
+	else return false;
+}
+
+template <typename T>
+auto tree_t<T>::operator==(tree_t const & other) const {
+	node_t* first = root_; node_t* second = other.root_;
+	if (equal(first, second)) {
+		cout << "True" << endl;
+	}
+	else {
+		cout << "False" << endl;
+	}
+}
+	
