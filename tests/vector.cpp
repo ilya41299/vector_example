@@ -37,6 +37,7 @@ TEST_CASE("Check root tree")
   REQUIRE(My_tree.find(2) == false);
 }
 
+
 TEST_CASE("Check operator tree '+' and '=' ")
 {
 	tree_t<int> My_tree;
