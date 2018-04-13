@@ -100,7 +100,7 @@ TEST_CASE(" operator== false")
 TEST_CASE("remove element")
 {	
 	std::initializer_list <int> list_1{ 7, 3, 9, 6};
-	tree_t<int> My_tree_1(list_1);
-	
-		REQUIRE(My_tree_1 == My_tree_2);
+	tree_t<int> My_tree_1(list_1); 
+		REQUIRE(remove(3) == true);
+	REQUIRE(remove(4) == false);
 }
