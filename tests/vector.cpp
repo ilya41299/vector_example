@@ -101,10 +101,10 @@ TEST_CASE("remove element")
 {	
 	std::initializer_list <int> list_1{ 9, 3, 10};
 	tree_t<int> My_tree_1(list_1); 
-	remove(3);
+	My_tree_1.remove(3);
 	REQUIRE(remove(3) == true);
 	std::ostringstream ostream;
-	My_tree.print(ostream, 0, My_tree.root());
+	My_tree.print(ostream, 0, My_tree_1.root());
 	std::string output {
 		"---10\n"
 		"9\n"};
