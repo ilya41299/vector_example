@@ -91,16 +91,22 @@ TEST_CASE(" operator== true")
 TEST_CASE(" operator== false")
 {	
 	std::initializer_list <int> list_1{ 7, 3, 9, 6};
-	std::initializer_list <int> list_2{ 7, 3, 9, 6};
+	std::initializer_list <int> list_2{ 7, 3, 9};
 	tree_t<int> My_tree_1(list_1);
 	tree_t<int> My_tree_2(list_2);
-	REQUIRE(My_tree_1 == My_tree_2);
+	REQUIRE(!(My_tree_1 == My_tree_2));
 }
 
 TEST_CASE("remove element")
 {	
-	std::initializer_list <int> list_1{ 7, 3, 9, 6};
+	std::initializer_list <int> list_1{ 9, 3, 10};
 	tree_t<int> My_tree_1(list_1); 
-		REQUIRE(remove(3) == true);
-	REQUIRE(remove(4) == false);
+	remove(3);
+	REQUIRE(remove(3) == true);
+	std::ostringstream ostream;
+	My_tree.print(ostream, 0, My_tree.root());
+	std::string output {
+		"---10\n"
+		"9\n"};
+	REQUIRE(output == ostream.str());
 }
