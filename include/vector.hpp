@@ -31,14 +31,14 @@ public:
 	auto operator==(tree_t const & other) const;
 	bool remove(T key);
 };
-	
+
 template <typename T>
 tree_t<T>::tree_t(std::initializer_list<T> keys)
 {
-	root_=nullptr;
+	root_ = nullptr;
 	int n = keys.size();
 	const int* _ptr = keys.begin();
-	for (int i=0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		insert(_ptr[i]);
 	}
@@ -182,11 +182,11 @@ void tree_t<T>::destroy(node_t* node)
 {
 	if (node != nullptr)
 	{
-		if (node->left) 
+		if (node->left)
 		{
 			destroy(node->left);
 		}
-		if (node->right) 
+		if (node->right)
 		{
 			destroy(node->right);
 		}
@@ -196,89 +196,88 @@ void tree_t<T>::destroy(node_t* node)
 
 
 template <typename T>
-bool tree_t<T>::remove(T key) 
+bool tree_t<T>::remove(T key)
 {
-if (root_ == nullptr)
-{
-	return false;
-}
-else
-{
-	node_t* param1 = root_;
-	node_t* param2 = root_;
-	while (1)
+	if (root_ == nullptr)
 	{
-		if (param2->value == key)
-		{
-			break;
-		}
-		else if (param2->value < key)
-		{
-			param1 = param2;
-			param2 = param2->right;
-		}
-		else if (param2->value > key)
-		{
-			param1 = param2;
-			param2 = param2->left;
-		}
-		else if (param2 == nullptr) {
-			break;
-		}
-	}
-	if (param2 == nullptr) {
 		return false;
 	}
-	else {
-		if (param2->left == nullptr && param2->right == nullptr) {
-			if (param2 == param1->right) {
-				param1->right = nullptr;
+	else
+	{
+		node_t* param1 = root_;
+		node_t* param2 = root_;
+		while (1)
+		{
+			if (param2->value == key)
+			{
+				break;
 			}
-			if (param2 == param1->left) {
-				param1->left = nullptr;
-			}
-			delete param2;
-			return true;
-		}
-		else {
-			if (param2->left == nullptr && param2->right != nullptr) {
-				if (param2 == param1->right) {
-					param1->right = nullptr;
-				}
-				if (param2 == param1->left) {
-					param1->left = nullptr;
-				}
-				delete param2;
-			}
-			else if (param2->left != nullptr && param2->right == nullptr) {
-				if (param2 == param1->right) {
-					param1->right = nullptr;
-				}
-				if (param2 == param1->left) {
-					param1->left = nullptr;
-				}
-				delete param2;
-			}
-			else if (param2->left != nullptr && param2->right != nullptr) {
-				node_t* param = param2;
+			else if (param2->value < key)
+			{
 				param1 = param2;
 				param2 = param2->right;
-				while (param2->left != nullptr) {
-					param1 = param2;
-					param2 = param2->left;
+			}
+			else if (param2->value > key)
+			{
+				param1 = param2;
+				param2 = param2->left;
+			}
+			else if (param2 == nullptr) {
+				break;
+			}
+		}
+		if (param2 == nullptr) {
+			return false;
+		}
+		else {
+			if (param2->left == nullptr && param2->right == nullptr) {
+				if (param2 == param1->right) {
+					param1->right = nullptr;
 				}
-				param->value = param2->value;
-				param1->left = param2->right;
+				if (param2 == param1->left) {
+					param1->left = nullptr;
+				}
 				delete param2;
+			}
+			else {
+				if (param2->left == nullptr && param2->right != nullptr) {
+					if (param2 == param1->right) {
+						param1->right = param2->right;
+					}
+					if (param2 == param1->left) {
+						param1->left = param2->right;
+					}
+					delete param2;
+				}
+				else if (param2->left != nullptr && param2->right == nullptr) {
+					if (param2 == param1->right) {
+						param1->right = param2->left;
+					}
+					if (param2 == param1->left) {
+						param1->left = param2->left;
+					}
+					delete param2;
+				}
+				else if (param2->left != nullptr && param2->right != nullptr) {
+					node_t* param = param2;
+					param1 = param2;
+					param2 = param2->right;
+					while (param2->left != nullptr) {
+						param1 = param2;
+						param2 = param2->left;
+					}
+					param->value = param2->value;
+					param1->left = param2->right;
+					delete param2;
+				}
 			}
 		}
 	}
+	return true;
 }
-return true;
-} 
 
 template <typename T>
-bool tree_t<T>::equal (node_t* first, node_t* second) const {
+bool tree_t<T>::equal(node_t* first, node_t* second) const {
 	if (first == nullptr && second == nullptr) return(true);
 	else if (first != nullptr && second != nullptr)
 	{
@@ -296,4 +295,3 @@ auto tree_t<T>::operator==(tree_t const & other) const {
 	node_t* first = root_; node_t* second = other.root_;
 	return (equal(first, second));
 }
-	
