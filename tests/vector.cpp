@@ -103,9 +103,8 @@ TEST_CASE("remove element 1")
 	std::initializer_list <int> list_1{ 9, 3, 10};
 	tree_t<int> My_tree_1(list_1); 
 	My_tree_1.remove(3);
-	REQUIRE(remove(3) == true);
 	std::ostringstream ostream;
-	My_tree_1.print(std::ostream, 0, My_tree_1.root());
+	My_tree_1.print(ostream, 0, My_tree_1.root());
 	std::string output {
 		"---10\n"
 		"9\n"};
@@ -117,9 +116,8 @@ TEST_CASE("remove element 2")
 	std::initializer_list <int> list_1{ 5, 4, 6, 3, 2, 8, 7 };
 	tree_t<int> My_tree_1(list_1); 
 	My_tree_1.remove(6);
-	REQUIRE(remove(6) == true);
 	std::ostringstream ostream;
-	My_tree_1.print(std::ostream, 0, My_tree_1.root());
+	My_tree_1.print(ostream, 0, My_tree_1.root());
 	std::string output {
 		"---8\n"
 		"------7\n"
@@ -136,9 +134,8 @@ TEST_CASE("remove element 3")
 	std::initializer_list <int> list_1{ 10, 13, 17, 16, 15, 14, 22, 20, 23, 12, 11 };
 	tree_t<int> My_tree_1(list_1); 
 	My_tree_1.remove(13);
-	REQUIRE(remove(13) == true);
 	std::ostringstream ostream;
-	My_tree_1.print(std::ostream, 0, My_tree_1.root());
+	My_tree_1.print(ostream, 0, My_tree_1.root());
 	std::string output {
 		"------------23\n"
 		"---------22\n"
