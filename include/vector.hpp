@@ -258,7 +258,7 @@ bool tree_t<T>::remove(T key)
 					if(param1==param2)
 					{
                  				node_t* node = root_;
-                   				root_ = root_ root_->right;
+                   				root_ = root_->right;
                    				delete node;
                				}
 					if (param2 == param1->right) {
@@ -273,7 +273,7 @@ bool tree_t<T>::remove(T key)
 					if(param1==param2)
 					{
                  				node_t* node = root_;
-                   				root_ = root_ root_->left;
+                   				root_ = root_->left;
                    				delete node;
                				}
 
