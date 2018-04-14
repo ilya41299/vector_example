@@ -255,6 +255,12 @@ bool tree_t<T>::remove(T key)
 			}
 			else {
 				if (param2->left == nullptr && param2->right != nullptr) {
+					if(param1==param2)
+					{
+                 				node_t* node = root_;
+                   				root_ = root_ root_->right;
+                   				delete node;
+               				}
 					if (param2 == param1->right) {
 						param1->right = param2->right;
 					}
@@ -264,6 +270,13 @@ bool tree_t<T>::remove(T key)
 					delete param2;
 				}
 				else if (param2->left != nullptr && param2->right == nullptr) {
+					if(param1==param2)
+					{
+                 				node_t* node = root_;
+                   				root_ = root_ root_->left;
+                   				delete node;
+               				}
+
 					if (param2 == param1->right) {
 						param1->right = param2->left;
 					}
