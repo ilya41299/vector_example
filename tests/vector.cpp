@@ -102,7 +102,7 @@ TEST_CASE("BST delete non inserted element", "[delete]")
 {	
 	std::initializer_list <int> list{8};
 	tree_t<int> My_tree(list); 
-	 REQUIRE( !My_tree.remove(4) );
+	 REQUIRE(!(My_tree.remove(4)));
 	REQUIRE(!(My_tree.isEmpty()));
 }
 
