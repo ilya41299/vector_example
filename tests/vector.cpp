@@ -98,54 +98,60 @@ TEST_CASE(" operator== false")
 	REQUIRE(!(My_tree_1 == My_tree_2));
 }
 
-TEST_CASE("remove element 1")
+TEST_CASE("BST delete non inserted element", "[delete]")
 {	
-	std::initializer_list <int> list_1{ 9, 3, 10};
-	tree_t<int> My_tree_1(list_1); 
-	My_tree_1.remove(3);
-	std::ostringstream ostream;
-	My_tree_1.print(ostream, 0, My_tree_1.root());
-	std::string output {
-		"---10\n"
-		"9\n"};
-	REQUIRE(output == ostream.str());
+	std::initializer_list <int> list{8};
+	tree_t<int> My_tree(list); 
+	 REQUIRE( !My_tree.remove(4) );
+	REQUIRE(!(My_tree.isEmpty()));
 }
 
-TEST_CASE("remove element 2")
+TEST_CASE("BST delete root without children", "[delete]")
 {	
-	std::initializer_list <int> list_1{ 5, 4, 6, 3, 2, 8, 7 };
-	tree_t<int> My_tree_1(list_1); 
-	My_tree_1.remove(6);
-	std::ostringstream ostream;
-	My_tree_1.print(ostream, 0, My_tree_1.root());
-	std::string output {
-		"---8\n"
-		"------7\n"
-		"5\n"
-		"---4\n"
-		"------3\n"	
-		"---------2\n"};
-	REQUIRE(output == ostream.str());
+	std::initializer_list <int> list{8};
+	tree_t<int> My_tree(list); 
+	REQUIRE(My_tree_1.remove(8));
+	REQUIRE(My_tree.isEmpty());
 }
 
 
-TEST_CASE("remove element 3")
+TEST_CASE("BST delete root with one child", "[delete]")
 {	
-	std::initializer_list <int> list_1{ 10, 13, 17, 16, 15, 14, 22, 20, 23, 12, 11 };
-	tree_t<int> My_tree_1(list_1); 
-	My_tree_1.remove(13);
-	std::ostringstream ostream;
-	My_tree_1.print(ostream, 0, My_tree_1.root());
-	std::string output {
-		"------------23\n"
-		"---------22\n"
-		"------------20\n"
-		"------17\n"
-		"---------16\n"	
-		"------------15\n"
-		"---14\n"
-		"------12\n"
-		"---------11\n"
-		"10\n"};
-	REQUIRE(output == ostream.str());
+	std::initializer_list <int> list_1{8, 4, 3};
+	std::initializer_list <int> list_2{ 4, 3};
+	tree_t<int> My_tree_1(list_1), My_tree_2(list_2); 
+  	REQUIRE(My_tree_1.remove(8));
+    	REQUIRE(My_tree_1 ==  My_tree_2);	
+}
+
+TEST_CASE("BST delete root with children", "[delete]")
+{
+	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{9, 4, 3, 10, 13, 11, 12};
+	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
+    	REQUIRE( My_tree_1.remove(8));
+    	REQUIRE( My_tree_1 == My_tree_2 );
+}
+
+TEST_CASE("BST delete non root without children", "[delete]")
+{
+	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 10, 9, 13, 11, 12};
+	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
+    	REQUIRE( My_tree_1.remove(3));
+    	REQUIRE( My_tree_1 == My_tree_2 );
+}
+
+TEST_CASE("BST delete non root with one child", "[delete]")
+{
+	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 3, 10, 9, 13, 12};
+	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
+    	REQUIRE( My_tree_1.remove(11));
+    	REQUIRE( My_tree_1 == My_tree_2 );
+}
+
+TEST_CASE("BST delete non root with children", "[delete]")
+{
+	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 3, 11, 9, 13, 12};
+	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
+    	REQUIRE( My_tree_1.remove(10));
+    	REQUIRE( My_tree_1 == My_tree_2 );
 }
