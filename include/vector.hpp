@@ -217,7 +217,7 @@ bool tree_t<T>::remove(T key)
 		if(find(key)==false){return false;}
 		if(root_->left==nullptr && root_->right==nullptr)
 		{
-			delete root_;
+			root_=nullptr;
 			return true;
 		}
 		while (1)
