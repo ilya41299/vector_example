@@ -125,7 +125,7 @@ TEST_CASE("remove element 2")
 		"---4\n"
 		"------3\n"	
 		"---------2\n"};
-	REQUIRE(output == std::ostream.str());
+	REQUIRE(output == ostream.str());
 }
 
 
@@ -147,5 +147,5 @@ TEST_CASE("remove element 3")
 		"------12\n"
 		"---------11\n"
 		"10\n"};
-	REQUIRE(output == std::ostream.str());
+	REQUIRE(output == ostream.str());
 }
