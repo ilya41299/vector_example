@@ -30,6 +30,14 @@ public:
 	tree_t(std::initializer_list<T> keys);
 	auto operator==(tree_t const & other) const;
 	bool remove(T key);
+	bool isEmpty()
+	{
+		if(root_==nullptr)
+		{
+			return true;
+		}
+	return false;
+	}
 };
 
 template <typename T>
