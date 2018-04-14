@@ -214,6 +214,11 @@ bool tree_t<T>::remove(T key)
 	{
 		node_t* param1 = root_;
 		node_t* param2 = root_;
+		if(root_->left==nullptr && root_->right==nullptr)
+		{
+			delete root_;
+			return true;
+		}
 		while (1)
 		{
 			if (param2->value == key)
