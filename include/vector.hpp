@@ -213,14 +213,14 @@ bool tree_t<T>::remove(T key)
         node_t* param1 = nullptr;
         node_t* param2 = root_;
         while(1){
-            if(param2->value == value){
+            if(param2->value == key){
                 break;
             }
-            else if(value > param2->value){
+            else if(key > param2->value){
                 param1 = param2;
                 param2 = param2->right;
             }
-            else if(value < param2->value){
+            else if(key < param2->value){
                 param1 = param2;
                 param2 = param2->left;
             }
