@@ -41,12 +41,11 @@ public:
 };
 
 template <typename T>
-tree_t<T>::tree_t(std::initializer_list<T> keys)
+rb_tree<T>::rb_tree(std::initializer_list<T> keys)
 {
 	root_ = nullptr;
-	int n = keys.size();
 	const int* _ptr = keys.begin();
-	for (int i = 0; i < n; i++)
+	for (auto i: keys)
 	{
 		insert(_ptr[i]);
 	}
