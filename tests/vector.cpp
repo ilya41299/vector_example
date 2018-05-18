@@ -1,157 +1,112 @@
 #include <catch.hpp>
 #include <sstream>
 
-#include "vector.hpp"
+#include "rb_tree.hpp"
 
-TEST_CASE("Сreating tree")
+TEST_CASE("creating tree")
 {
-	tree_t<int> My_tree;
-	REQUIRE( My_tree.root() == nullptr );
+    tree_t<int> tree;
+    REQUIRE(tree.root() == nullptr);
 }
 
-TEST_CASE("Add elements in tree")
+
+ 
+
+TEST_CASE("Test delete 1")
 {
-	tree_t<int> My_tree;
-	My_tree.insert(7);
-	My_tree.insert(3);
-	My_tree.insert(9);
-	My_tree.insert(6);
-	std::ostringstream ostream;
-	My_tree.print(ostream, 0, My_tree.root());
-	std::string output{
-		"---9\n"
-		"7\n"
-		"------6\n"
-		"---3\n"};
-	REQUIRE(output == ostream.str());
+    tree_t<int> tree{ 1, 2, 3, 4, 5 };
+
+    tree.remove(4);
+
+    std::string out{
+
+        "----5\n"
+        "------3\n"
+        "--2\n"
+        "----1\n"
+    };
+
+    std::ostringstream ostream;
+    tree.print(ostream, tree.root(), 1);
+
+    REQUIRE(ostream.str() == out);
 }
 
-TEST_CASE("Check root tree")
+TEST_CASE("Test delete 2")
 {
-  tree_t<int> My_tree;
-  My_tree.insert(7);
-  My_tree.insert(3);
-  My_tree.insert(9); 
+    tree_t<int> tree{ 7, 3, 8, 9, 1, 0 };
 
-  REQUIRE(My_tree.find(9) == true);
-  REQUIRE(My_tree.find(2) == false);
+    tree.remove(1);
+
+    std::string out{ "------9\n"
+                     "----8\n"
+                     "--7\n"
+                     "----3\n"
+                     "------0\n" };
+    std::ostringstream ostream;
+    tree.print(ostream, tree.root(), 1);
+
+    REQUIRE(ostream.str() == out);
 }
 
-
-TEST_CASE("Check operator tree '+' and '=' ")
+TEST_CASE("Test case 5")
 {
-	tree_t<int> My_tree;
-	std::ostringstream ostream;
-	My_tree.check_operator(ostream, '+', 7);
-	My_tree.check_operator(ostream, '+', 3);
-	My_tree.check_operator(ostream, '+', 9);
-	My_tree.check_operator(ostream, '+', 6);
-	std::string output {
-		"---9\n"
-		"7\n"
-		"------6\n"
-		"---3\n"};
-	My_tree.check_operator (ostream, '=', 0);
-	
-	REQUIRE(output == ostream.str());
+    tree_t<int> tree{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0 };
+
+    tree.remove(3);
+    tree.remove(2);
+
+    std::string out{ "--------11\n"
+                     "------10\n"
+                     "--------9\n"
+                     "----8\n"
+                     "------7\n"
+                     "--6\n"
+                     "------5\n"
+                     "----4\n"
+                     "------1\n"
+                     "--------0\n"
+
+    };
+
+    std::ostringstream ostream;
+    tree.print(ostream, tree.root(), 1);
+
+    REQUIRE(ostream.str() == out);
 }
-TEST_CASE("Check operator tree '?' ")
+
+TEST_CASE("Test case 3")
 {
-	tree_t<int> My_tree;
-	My_tree.insert(7);
-	My_tree.insert(3);
-	My_tree.insert(9); 
-	std::ostringstream ostream;
-	My_tree.check_operator (ostream, '?', 3);
-	REQUIRE(ostream.str() == "true");
+    tree_t<int> tree{ 5, 3, 7, 8 };
+
+    tree.remove(8);
+    tree.remove(3);
+
+    std::string out{ "----7\n"
+                     "--5\n" };
+
+    std::ostringstream ostream;
+    tree.print(ostream, tree.root(), 1);
+
+    REQUIRE(ostream.str() == out);
 }
-	
-//
-TEST_CASE(" initializer_list ")
+
+TEST_CASE("Test case 2")
 {
-	std::initializer_list <int> list{ 7, 3, 9, 6};
-	tree_t<int> My_tree(list);
-	std::ostringstream ostream;
-	My_tree.print(ostream, 0, My_tree.root());
-	std::string output {
-		"---9\n"
-		"7\n"
-		"------6\n"
-		"---3\n"};
-	REQUIRE(output == ostream.str());
-}
+    tree_t<int> tree{ 5, 3, 7, 8, 6, 2, 1, 9 };
 
-TEST_CASE(" operator== true")
-{	
-	std::initializer_list <int> list{ 7, 3, 9, 6};
-	tree_t<int> My_tree_1(list);
-	tree_t<int> My_tree_2(list);
-	REQUIRE(My_tree_1 == My_tree_2);
-}
+    tree.remove(2);
 
-TEST_CASE(" operator== false")
-{	
-	std::initializer_list <int> list_1{ 7, 3, 9, 6};
-	std::initializer_list <int> list_2{ 7, 3, 9};
-	tree_t<int> My_tree_1(list_1);
-	tree_t<int> My_tree_2(list_2);
-	REQUIRE(!(My_tree_1 == My_tree_2));
-}
+    std::string out{ "--------9\n"
+                     "------8\n"
+                     "----7\n"
+                     "------6\n"
+                     "--5\n"
+                     "----3\n"
+                     "------1\n" };
 
-TEST_CASE("BST delete non inserted element", "[delete]")
-{	
-	std::initializer_list <int> list{8};
-	tree_t<int> My_tree(list); 
-	 REQUIRE(!(My_tree.remove(4)));
-	REQUIRE(!(My_tree.isEmpty()));
-}
+    std::ostringstream ostream;
+    tree.print(ostream, tree.root(), 1);
 
-TEST_CASE("BST delete root without children", "[delete]")
-{	
-	std::initializer_list <int> list{8};
-	tree_t<int> My_tree(list); 
-	REQUIRE(My_tree.remove(8));
-	REQUIRE(My_tree.isEmpty());
-}
-
-
-TEST_CASE("BST delete root with one child", "[delete]")
-{	
-	std::initializer_list <int> list_1{8, 4, 3};
-	std::initializer_list <int> list_2{ 4, 3};
-	tree_t<int> My_tree_1(list_1), My_tree_2(list_2); 
-  	REQUIRE(My_tree_1.remove(8));
-    	REQUIRE(My_tree_1 ==  My_tree_2);	
-}
-
-TEST_CASE("BST delete root with children", "[delete]")
-{
-	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{9, 4, 3, 10, 13, 11, 12};
-	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
-    	REQUIRE( My_tree_1.remove(8));
-    	REQUIRE( My_tree_1 == My_tree_2 );
-}
-
-TEST_CASE("BST delete non root without children", "[delete]")
-{
-	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 10, 9, 13, 11, 12};
-	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
-    	REQUIRE( My_tree_1.remove(3));
-    	REQUIRE( My_tree_1 == My_tree_2 );
-}
-
-TEST_CASE("BST delete non root with one child", "[delete]")
-{
-	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 3, 10, 9, 13, 12};
-	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
-    	REQUIRE( My_tree_1.remove(11));
-    	REQUIRE( My_tree_1 == My_tree_2 );
-}
-
-TEST_CASE("BST delete non root with children", "[delete]")
-{
-	std::initializer_list <int> list_1{8, 4, 3, 10, 9, 13, 11, 12}, list_2{8, 4, 3, 11, 9, 13, 12};
-	tree_t<int> My_tree_1(list_1), My_tree_2(list_2);
-    	REQUIRE( My_tree_1.remove(10));
-    	REQUIRE( My_tree_1 == My_tree_2 );
+    REQUIRE(ostream.str() == out);
 }
