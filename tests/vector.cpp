@@ -1,7 +1,7 @@
 #include <catch.hpp>
 #include <sstream>
 
-#include "rb_tree.hpp"
+#include "vector.hpp"
 
 TEST_CASE("creating tree")
 {
