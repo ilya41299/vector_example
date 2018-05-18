@@ -9,9 +9,6 @@ TEST_CASE("creating tree")
     REQUIRE(tree.root() == nullptr);
 }
 
-
- 
-
 TEST_CASE("Test delete 1")
 {
     tree_t<int> tree{ 1, 2, 3, 4, 5 };
