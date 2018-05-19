@@ -1,7 +1,7 @@
 #include <catch.hpp>
 #include <sstream>
 
-#include "vector.hpp"
+#include "tree_t.hpp"
 
 TEST_CASE("Сreating tree")
 {
