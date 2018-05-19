@@ -24,7 +24,7 @@ TEST_CASE("Test delete 1")
     };
 
     std::ostringstream ostream;
-    tree.print(ostream, tree.root(), 1);
+    tree.print(ostream, 0, tree.root());
 
     REQUIRE(ostream.str() == out);
 }
@@ -67,7 +67,7 @@ TEST_CASE("Test case 5")
     };
 
     std::ostringstream ostream;
-    tree.print(ostream, tree.root(), 1);
+    tree.print(ostream, 0, tree.root());
 
     REQUIRE(ostream.str() == out);
 }
@@ -83,7 +83,7 @@ TEST_CASE("Test case 3")
                      "--5\n" };
 
     std::ostringstream ostream;
-    tree.print(ostream, tree.root(), 1);
+    tree.print(ostream, 0, tree.root());
 
     REQUIRE(ostream.str() == out);
 }
@@ -103,7 +103,7 @@ TEST_CASE("Test case 2")
                      "------1\n" };
 
     std::ostringstream ostream;
-    tree.print(ostream, tree.root(), 1);
+    tree.print(ostream, 0, tree.root());
 
     REQUIRE(ostream.str() == out);
 }
