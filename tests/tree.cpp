@@ -41,7 +41,7 @@ TEST_CASE("Test delete 2")
                      "----3\n"
                      "------0\n" };
     std::ostringstream ostream;
-    tree.print(ostream, tree.root(), 1);
+    tree.print(ostream, 0, tree.root());
 
     REQUIRE(ostream.str() == out);
 }
