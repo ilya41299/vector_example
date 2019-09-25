@@ -1,194 +1,139 @@
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
 #include <algorithm>
-#include <cassert>
-
+#include <stack>
+#include <queue>
 
 template <typename T>
-class vector_t
+class Graph 
 {
-private:
-	T * elements_;
-	std::size_t size_;
-	std::size_t capacity_;
+	T structure;
+	std::string start_vertex;
+	std::unordered_map<std::string, std::vector<std::string>> ribs;
+	bool type_graph; // - directed(true), undirected(false);
+	bool search_type; // - breadth(true), deep(false);
+	std::unordered_set<std::string> visited;
+
 public:
-	vector_t();
-	vector_t(vector_t const & other);
-	vector_t & operator =(vector_t const & other);
-	~vector_t();
+	Graph<T>(std::string set_type_graph, std::string set_vertex, std::unordered_map<std::string, std::vector<std::string>>& set_ribs, bool set_search_type)
+	{
+		if (set_type_graph == "d")type_graph = true;
+		else type_graph = false;
+		ribs = set_ribs;
+		start_vertex = set_vertex;
+		search_type = set_search_type;
+	}
 
-	std::size_t size() const;
-	std::size_t capacity() const;
-	T & at (std::size_t index);
-	void push_back(T value);
-	void pop_back();
+	void find_way()
+	{
+		structure.push(start_vertex);
+		bool first_endl = false;
+		while (!structure.empty())
+		{
+			std::string temp = take_v(structure);
+			structure.pop();
+			if (is_visited(temp)) continue;
+			visited.insert(temp);
+			if (first_endl) 
+			{
+				std::cout << std::endl;
+			}
+			std::cout << temp;
+			first_endl = true;
+			
+			std::sort(ribs[temp].begin(), ribs[temp].end());
+			if (search_type) 
+			{
+				for (int i = 0; i < ribs[temp].size(); i++)
+				{
+					if (!is_visited(ribs[temp][i]))
+					{
+						structure.push(ribs[temp][i]);
+					}
+				}
+			}
+			else 
+			{
+				for (int i = ribs[temp].size() - 1; i >= 0; i--) 
+				{
+					if (!is_visited(ribs[temp][i]))
+					{
+						structure.push(ribs[temp][i]);
+					}
+				}
+			}
+			
+		}
+	}
+private:
+	bool is_visited(std::string V)
+	{
+		auto it = visited.find(V);
+		if (it!= visited.end()) return true;
+		else return false;
 
-	T & operator [](std::size_t index);
-	T operator [](std::size_t index) const;
+	}
 
-	bool operator ==(vector_t const & other) const;
+	std::string take_v(std::queue<std::string> &queue_struct) 
+	{
+		return queue_struct.front();
+	}
+
+	std::string take_v(std::stack<std::string> &queue_struct)
+	{
+		return queue_struct.top();
+	}
+
 };
 
-template <typename T>
-bool operator !=(vector_t<T> const & lhs, vector_t<T> const & rhs);
 
-template <typename T>
-vector_t<T>::vector_t()
+int main()
 {
-	elements_ = nullptr;
-	size_ = 0;
-	capacity_ = 0;
-}
+	std::string line, type_graph, vertex, search_type;
+	bool type_graph_bool;
+	std::unordered_map<std::string, std::vector<std::string>> ribs;
+	std::getline(std::cin, line);
+	std::istringstream line_stream(line);
 
-template <typename T>
-vector_t<T>::vector_t(vector_t<T> const & other)
-{
-	size_ = other.size_;
-	capacity_ = other.capacity_;
-	elements_ = new T[capacity_];
-	for (std::size_t i = 0; i < size_; ++i)
+	line_stream >> type_graph;
+	line_stream >> vertex;
+	line_stream >> search_type;
+
+	if (type_graph == "u") type_graph_bool = true; // НЕорграф
+	else type_graph_bool = false; // орграф
+
+
+	while (std::getline(std::cin, line)) 
 	{
-		elements_[i] = other.elements_[i];
-	}
-}
-
-template <typename T>
-vector_t<T> & vector_t<T>::operator =(vector_t const & other)
-{
-	if (this != &other)
-	{
-		delete[] elements_;
-		size_ = other.size_;
-		capacity_ = other.capacity_;
-		elements_ = new T[other.capacity_];
-		for (std::size_t i = 0; i < size_; i++)
+		std::istringstream line_stream(line);
+		std::string vertex_1, vertex_2;
+		line_stream >> vertex_1;
+		line_stream >> vertex_2;
+		ribs[vertex_1].push_back(vertex_2);	
+		if (type_graph_bool)
 		{
-			elements_[i] = other.elements_[i];
+			ribs[vertex_2].push_back(vertex_1);
 		}
 	}
-	return *this;
-}
 
-template <typename T>
-bool vector_t<T>::operator ==(vector_t const & other) const
-{
-	if (size_ == other.size_)
+	for (auto& var: ribs)
 	{
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			if (elements_[i] != other.elements_[i])
-			{
-				return false;
-			}
-		}
-		return true;
+		std::sort(var.second.begin(), var.second.end());
 	}
-	else return false;
-}
 
-template <typename T>
-vector_t<T>::~vector_t()
-{
-	delete[] elements_;
-}
-
-template <typename T>
-std::size_t vector_t<T>::size() const
-{
-	return size_;
-}
-
-template <typename T>
-std::size_t vector_t<T>::capacity() const
-{
-	return capacity_;
-}
-
-template <typename T>
-void vector_t<T>::push_back(T value)
-{
-	if (size_ == 0)
+	if (search_type == "b") 
 	{
-		size_ = 1;
-		capacity_ = 1;
-		elements_ = new T[capacity_];
-		elements_[0] = value;
+		Graph<std::queue<std::string>> My_g(type_graph, vertex, ribs, true);
+		My_g.find_way();
 	}
-	else if (size_ == capacity_)
+	else 
 	{
-		T * mas;
-		mas = new T[size_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			mas[i] = elements_[i];
-		}
-		delete[] elements_;
-		capacity_ *= 2;
-		elements_ = new T[capacity_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			elements_[i] = mas[i];
-		}
-		delete[] mas;
-		elements_[size_] = value;
-		size_++;
+		Graph<std::stack<std::string>> My_g(type_graph, vertex, ribs, false);
+		My_g.find_way();
 	}
-	else
-	{
-		elements_[size_] = value;
-		size_++;
-	}
-}
-
-template <typename T>
-void vector_t<T>::pop_back()
-{
-	size_--;
-	if (size_ == 0 || size_ * 4 == capacity_)
-	{
-		T *mas;
-		mas = new T[size_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			mas[i] = elements_[i];
-		}
-		delete[] elements_;
-		capacity_ = capacity_ / 2;
-		elements_ = new T[capacity_];
-		for (std::size_t i = 0; i < size_; i++)
-		{
-			elements_[i] = mas[i];
-		}
-		delete[] mas;
-	}
-}
-
-template <typename T>
-T & vector_t<T>::operator [](std::size_t index)
-{
-	return elements_[index];
-}
-
-template <typename T>
-T vector_t<T>::operator [](std::size_t index) const
-{
-	return elements_[index];
-}
-
-template <typename T>
-bool operator !=(vector_t<T> const & lhs, vector_t<T> const & rhs)
-{
-	if (lhs == rhs)
-	{
-		return false;
-	}
-	return true;
-}
-
-template <typename T>
-T & vector_t<T>::at (std::size_t index) 
-{
-	if ( index >= size_ ) {
-		throw std::out_of_range( "Error range" );
-	}
-	return elements_[index];
+	return 0;
 }
